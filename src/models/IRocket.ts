@@ -102,7 +102,7 @@ interface Isp {
 
 interface LandingLegs {
   number: number
-  material?: string
+  material?: string | null
 }
 
 interface PayloadWeight {

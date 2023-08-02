@@ -41,7 +41,7 @@ const LaunchCard: FC<ILaunchCardProps> = ({
           <h2>{launch.name}</h2>
           <p>{launch.details}</p>
         </div>
-        <span style={{textAlign: "right"}}>{launchDate.toLocaleDateString()} {launchDate.toLocaleTimeString()}</span>
+        <span style={{textAlign: "right"}}>{`${launchDate.toLocaleDateString()} ${launchDate.toLocaleTimeString()}`}</span>
       </Box>
     </Paper>
   );

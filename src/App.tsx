@@ -1,5 +1,5 @@
 // React
-import {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
+import {ChangeEvent, MouseEvent, useState} from 'react';
 // Redux
 import {launchAPI} from "./services/LaunchService";
 import {rocketAPI} from "./services/RocketService";
@@ -19,7 +19,7 @@ import {SortType} from "./models/ILaunch";
 
 const App = () => {
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const handleChangePage = (
     event: ChangeEvent<unknown>,
     value: number

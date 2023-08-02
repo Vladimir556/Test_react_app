@@ -19,7 +19,7 @@ export interface ILaunch {
   links: Links
   static_fire_date_utc: string
   static_fire_date_unix: number
-  tdb: boolean
+  tbd: boolean | null
   net: boolean
   window: number
   rocket: string
@@ -41,6 +41,7 @@ export interface ILaunch {
   upcoming: boolean
   cores: Core[]
   id: string
+  launch_library_id: string | null
 }
 
 export interface Links {
@@ -60,10 +61,10 @@ export interface Patch {
 }
 
 export interface Reddit {
-  campaign: string
+  campaign: string | null
   launch: string
-  media: string
-  recovery: string
+  media: string | null
+  recovery: string | null
 }
 
 export interface Flickr {
