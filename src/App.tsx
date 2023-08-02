@@ -1,5 +1,5 @@
 // React
-import {useEffect, useState} from 'react';
+import {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
 // Redux
 import {launchAPI} from "./services/LaunchService";
 // Components
@@ -14,12 +14,14 @@ import {
 import LaunchCard from "./components/LaunchCard/LaunchCard";
 // Types
 import {ILaunch, SortType} from "./models/ILaunch";
+import {rocketAPI} from "./services/RocketService";
+import {useAppSelector} from "./hooks/redux";
 
 const App = () => {
 
   const [page, setPage] = useState(1);
   const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
+    event: ChangeEvent<unknown>,
     value: number
   ) => {
     window.scroll(0, 0)
@@ -28,20 +30,26 @@ const App = () => {
 
   const [sort, setSort] = useState<SortType>('asc');
   const handleChangeSorting = (
-    event: React.MouseEvent<HTMLElement>,
+    event: MouseEvent<HTMLElement>,
     newSort: SortType,
   ) => {
     newSort && setSort(newSort)
   };
 
-  const {data, isLoading} = launchAPI.useFetchLaunchesQuery({page, sort})
+  const {data: launches, isLoading} = launchAPI.useFetchLaunchesQuery({page, sort})
+  const {data: rockets, isLoading: isLoadingRockets} = rocketAPI.useFetchRocketsQuery()
+
+  useEffect( () => {
+    console.log(rockets)
+  }, [launches, rockets]);
 
   return (
     <>
       <Container
         maxWidth={"xl"}
         sx={{
-          minHeight: '100vh'
+          minHeight: '100vh',
+          py: 1
         }}
       >
         {
@@ -49,9 +57,10 @@ const App = () => {
         }
 
         <Stack spacing={2}>
-          {data?.docs?.map((launch) =>
+          {launches?.docs?.map((launch) =>
             <LaunchCard
               launch={launch}
+              rocket={rockets?.[`${launch.rocket}`]}
               key={launch.id}
             />
           )}
@@ -81,7 +90,7 @@ const App = () => {
             <ToggleButton size="small" value="desc">DESC</ToggleButton>
           </ToggleButtonGroup>
           <Pagination
-            count={data?.totalPages}
+            count={launches?.totalPages}
             page={page}
             onChange={handleChangePage}
           />

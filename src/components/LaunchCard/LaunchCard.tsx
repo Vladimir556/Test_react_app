@@ -1,13 +1,16 @@
-import {FC, useEffect} from 'react';
+import {FC} from 'react';
 import {ILaunch} from "../../models/ILaunch";
+import {IRocket} from "../../models/IRocket";
 import {Paper} from "@mui/material";
 
 interface ILaunchCardProps {
-  launch: ILaunch
+  launch: ILaunch,
+  rocket?: IRocket
 }
 
 const LaunchCard: FC<ILaunchCardProps> = ({
-  launch
+  launch,
+  rocket
   }) => {
 
   const launchDate = new Date(launch.date_utc)
@@ -22,7 +25,7 @@ const LaunchCard: FC<ILaunchCardProps> = ({
       }}
     >
       <img
-        src={`${launch.links.flickr.original[0]}`}
+        src={`${rocket?.flickr_images[0]}`}
         alt="rocket"
         height={200}
         width={200}
