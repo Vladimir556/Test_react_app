@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {ILaunch} from "../../models/ILaunch";
 import {IRocket} from "../../models/IRocket";
-import {Box, Paper} from "@mui/material";
+import {Box, Paper, useMediaQuery} from "@mui/material";
 
 interface ILaunchCardProps {
   launch: ILaunch,
@@ -13,6 +13,8 @@ const LaunchCard: FC<ILaunchCardProps> = ({
   rocket
   }) => {
 
+  const media = useMediaQuery('(min-width:480px)');
+
   const launchDate = new Date(launch.date_utc)
 
   return (
@@ -20,7 +22,8 @@ const LaunchCard: FC<ILaunchCardProps> = ({
       sx={{
         p:2,
         display: 'flex',
-        gap: '1rem',
+        flexDirection: media ? 'row' : 'column',
+        gap: '1rem'
       }}
     >
       <img
@@ -41,7 +44,7 @@ const LaunchCard: FC<ILaunchCardProps> = ({
           <h2>{launch.name}</h2>
           <p>{launch.details}</p>
         </div>
-        <span style={{textAlign: "right"}}>{launchDate.toLocaleDateString()} {launchDate.toLocaleTimeString()}</span>
+        <span style={{textAlign: "right"}}>{`${launchDate.toLocaleDateString()} ${launchDate.toLocaleTimeString()}`}</span>
       </Box>
     </Paper>
   );
