@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import {ILaunch} from "../../models/ILaunch";
 import {IRocket} from "../../models/IRocket";
-import {Paper} from "@mui/material";
+import {Box, Paper} from "@mui/material";
 
 interface ILaunchCardProps {
   launch: ILaunch,
@@ -20,8 +20,7 @@ const LaunchCard: FC<ILaunchCardProps> = ({
       sx={{
         p:2,
         display: 'flex',
-        gap: '12px',
-        width: '100%',
+        gap: '1rem',
       }}
     >
       <img
@@ -30,11 +29,20 @@ const LaunchCard: FC<ILaunchCardProps> = ({
         height={200}
         width={200}
       />
-      <div>
-        <h2>{launch.name}</h2>
-        <p>{launch.details}</p>
-        <span>{launchDate.toLocaleDateString()} {launchDate.toLocaleTimeString()}</span>
-      </div>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          width: '100%'
+        }}
+      >
+        <div>
+          <h2>{launch.name}</h2>
+          <p>{launch.details}</p>
+        </div>
+        <span style={{textAlign: "right"}}>{launchDate.toLocaleDateString()} {launchDate.toLocaleTimeString()}</span>
+      </Box>
     </Paper>
   );
 };
