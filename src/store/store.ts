@@ -1,15 +1,20 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit"
 import {launchAPI} from "../services/LaunchService";
+import {rocketAPI} from "../services/RocketService";
 
 const rootReducer = combineReducers({
-  [launchAPI.reducerPath]: launchAPI.reducer
+  [launchAPI.reducerPath]: launchAPI.reducer,
+  [rocketAPI.reducerPath]: rocketAPI.reducer,
 })
 
 export const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(launchAPI.middleware)
+      getDefaultMiddleware().concat([
+        launchAPI.middleware,
+        rocketAPI.middleware
+      ])
   })
 }
 

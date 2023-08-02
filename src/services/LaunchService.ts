@@ -6,7 +6,7 @@ export const launchAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.spacexdata.com/v5/'
   }),
-  // tagTypes: ['Launch'],
+  tagTypes: ['Launch'],
 
   endpoints: (build) => ({
     fetchLaunches: build.query<ILaunchQuery, { page: number, sort?: SortType }>({

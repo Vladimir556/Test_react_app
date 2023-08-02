@@ -1,25 +1,27 @@
 // React
-import {useEffect, useState} from 'react';
+import {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
 // Redux
 import {launchAPI} from "./services/LaunchService";
+import {rocketAPI} from "./services/RocketService";
 // Components
 import {
   Box,
-  Container, Grid,
+  Container,
   LinearProgress,
-  Pagination, Stack,
+  Pagination,
+  Stack,
   ToggleButton,
   ToggleButtonGroup
 } from "@mui/material";
 import LaunchCard from "./components/LaunchCard/LaunchCard";
 // Types
-import {ILaunch, SortType} from "./models/ILaunch";
+import {SortType} from "./models/ILaunch";
 
 const App = () => {
 
   const [page, setPage] = useState(1);
   const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
+    event: ChangeEvent<unknown>,
     value: number
   ) => {
     window.scroll(0, 0)
@@ -28,67 +30,74 @@ const App = () => {
 
   const [sort, setSort] = useState<SortType>('asc');
   const handleChangeSorting = (
-    event: React.MouseEvent<HTMLElement>,
+    event: MouseEvent<HTMLElement>,
     newSort: SortType,
   ) => {
-    newSort && setSort(newSort)
+    if (newSort) {
+      setSort(newSort)
+      setPage(1)
+    }
   };
 
-  const {data, isLoading} = launchAPI.useFetchLaunchesQuery({page, sort})
+  const {data: launches, isFetching} = launchAPI.useFetchLaunchesQuery({page, sort})
+  const {data: rockets} = rocketAPI.useFetchRocketsQuery()
 
   return (
-    <>
-      <Container
-        maxWidth={"xl"}
+    <Container
+      maxWidth={"xl"}
+      sx={{
+        minHeight: '100vh',
+        py: 1
+      }}
+    >
+      {
+        isFetching && <LinearProgress/>
+      }
+
+      <ToggleButtonGroup
+        color="primary"
+        value={sort}
+        exclusive
+        onChange={handleChangeSorting}
+        aria-label="Platform"
         sx={{
-          minHeight: '100vh'
+          display: 'flex',
+          justifyContent: 'flex-end',
+          py: 1
         }}
       >
-        {
-          isLoading && <LinearProgress/>
-        }
+        <ToggleButton size="small" value="asc">old first</ToggleButton>
+        <ToggleButton size="small" value="desc">new first</ToggleButton>
+      </ToggleButtonGroup>
 
-        <Stack spacing={2}>
-          {data?.docs?.map((launch) =>
-            <LaunchCard
-              launch={launch}
-              key={launch.id}
-            />
-          )}
-        </Stack>
-
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            alignItem: 'center',
-            justifyContent: 'center',
-            zIndex: 3,
-            py: 1
-          }}
-        >
-          <p>
-            Sort by:
-          </p>
-          <ToggleButtonGroup
-            color="primary"
-            value={sort}
-            exclusive
-            onChange={handleChangeSorting}
-            aria-label="Platform"
-          >
-            <ToggleButton size="small" value="asc">ASC</ToggleButton>
-            <ToggleButton size="small" value="desc">DESC</ToggleButton>
-          </ToggleButtonGroup>
-          <Pagination
-            count={data?.totalPages}
-            page={page}
-            onChange={handleChangePage}
+      <Stack spacing={2}>
+        {launches?.docs?.map((launch) =>
+          <LaunchCard
+            launch={launch}
+            rocket={rockets?.[`${launch.rocket}`]}
+            key={launch.id}
           />
-        </Box>
+        )}
+      </Stack>
 
-      </Container>
-    </>
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
+          alignItem: 'center',
+          justifyContent: 'center',
+          py: 1
+        }}
+      >
+
+        <Pagination
+          count={launches?.totalPages || 1}
+          page={page}
+          onChange={handleChangePage}
+        />
+      </Box>
+
+    </Container>
   );
 };
 
