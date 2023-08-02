@@ -42,10 +42,6 @@ const App = () => {
   const {data: launches, isFetching} = launchAPI.useFetchLaunchesQuery({page, sort})
   const {data: rockets} = rocketAPI.useFetchRocketsQuery()
 
-  useEffect( () => {
-    console.log(rockets)
-  }, [launches, rockets]);
-
   return (
     <Container
       maxWidth={"xl"}
@@ -90,7 +86,6 @@ const App = () => {
           width: '100%',
           alignItem: 'center',
           justifyContent: 'center',
-          zIndex: 3,
           py: 1
         }}
       >
