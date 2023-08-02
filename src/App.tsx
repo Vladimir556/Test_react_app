@@ -11,13 +11,15 @@ import {
   Pagination,
   Stack,
   ToggleButton,
-  ToggleButtonGroup
+  ToggleButtonGroup, useMediaQuery
 } from "@mui/material";
 import LaunchCard from "./components/LaunchCard/LaunchCard";
 // Types
 import {SortType} from "./models/ILaunch";
 
 const App = () => {
+
+  const media = useMediaQuery('(min-width:480px)');
 
   const [page, setPage] = useState<number>(1);
   const handleChangePage = (
@@ -94,6 +96,7 @@ const App = () => {
           count={launches?.totalPages || 1}
           page={page}
           onChange={handleChangePage}
+          siblingCount={media ? 1 : 0}
         />
       </Box>
 

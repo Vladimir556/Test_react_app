@@ -1,6 +1,6 @@
 // App.test.tsx
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import {launchAPI} from "../services/LaunchService";
 import {rocketAPI} from "../services/RocketService";
 import App from "../App";
